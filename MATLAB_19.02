@@ -1,0 +1,102 @@
+syms a11 a12 a21 a22
+A = [a11 a12; a21 a22];
+syms b11 b12 b21 b22
+B = [b11 b12 ; b21 b22];
+C = A*B
+D =A.*B
+%% Simbolu mainīgo definēšana 
+% 1. variants
+x = sym('x'); %šī rindā tiek definēts simboliskais mainīgais x
+sqrt(x^2)
+x = sym('x', 'positive'); %pardefinēsim x būs lielāks par nulli
+sqrt(x^2)
+%2.variants 
+syms a b c d 
+A = [a b; c d];
+%matricai pielietosim ''zīmi, kas nozīmē transponēšana, kā arī kompleksam
+%matricam tā zīmē nozīmē ka elementi būs kompleksi saistīti
+A' %conj nozīmē kompleksi saistītas 
+syms a b c d real %nav kompleksi
+A = [a b; c d];
+A'
+%3.variants(simboliskie mainīgie)
+A = sym('a', [2 2])
+%tas ļauj mums uzreiz definēt matricu 
+%% Atvasināšana
+syms x 
+y = x^2;
+diff(y)
+%%
+syms x z 
+y = x^2*z^3
+%norādīsim pēc kā atvasināt
+diff(y,x) %funkciju y atvasināsin pēc x
+diff(y,z) %funkciju x atvasināsin pēc y
+%%
+%% Integrēšana
+syms x 
+y = 2*x;
+int(y,x)%integrēsim funkciju y pēc x 
+%% Noteiktais integrālis
+%integrēšanas robežas no 0 līdz 3
+syms x
+y = x
+int(y,x,0,3)
+%robežas -3 līdz 3
+y = x^2;
+int(y,x,-3,3)
+%% vienadojumu risināšana 
+syms x 
+%x^2-5*x+6=0
+solve(x^2-5*x+6==0)
+%% vienādojumu sistēmas risināšana
+% ridsināsim x-y=-3 un 2x+2y=14
+syms x y 
+xy=solve(x-y==-3, 2*x+2*y==14,[x,y])
+%pie x var rakstot struktūras nosaukumu (xy.x vai xy.y)
+xy.x
+xy.y
+%% izteiksmju vienkāršošāna
+syms x 
+z = diff((x-1)*(x-2)^2/(x-3))
+%mēģināsim to vienkāršot 
+simplify(z)
+%% izteiksmju pārveidošana
+syms x 
+y = (x-1)*(x-2);
+z = expand(y)
+%pretēja darbība 
+factor(z)
+horner(z)
+%% rezultūta grisfiskā attēlošāna
+%visvienkāršāk 
+syms x 
+z = diff((x-1)*(x-2)^2/(x-3))
+ezplot(z)
+%% rezultatu grafiskā attēlošana 
+% 2 lab.d
+%dots y = x^2-5*x ir jāatrog y'
+%jāuzzīmē [-3 līdz 3]
+%% Risinājums 
+%1.definēsim simboliskus mainīgus
+syms x 
+y = x^2-5*x
+yd = diff(y)
+%% definēsim x kā vektoru intervālā no [-3 līdz 3]
+x = -3:0.01:3;
+%% izteiksmju vektorizācija 
+% visur ieliekam punktiņus
+yv = vectorize(y)
+ydv = vectorize(yd)
+%% intepretēsim izteiksmes 
+% copy - paste (nedarīsim)
+yn = eval(yv)
+ydn = eval(ydv)
+%% uzzīmēsim ar plot funkciju
+plot(x,yn,x,ydn)
+%% grafiku anotācija 
+%pārtulkosim formulas LaTEX valodā
+yltx = latex(y)
+ydltx = latex(yd)
+h = legend(['$',yltx,'$'],['$',ydltx, '$'])
+set(h,'Interpreter','latex')
