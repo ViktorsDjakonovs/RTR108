@@ -1,0 +1,45 @@
+%% Laboratorijas darbs #2
+%%
+% *Merijumu datu apstrade*
+%%
+% *Viktors Djakonovs*
+%%
+% *REBCO3*
+function y = lab3(t)
+if nargin == 0
+    t = 0:0.01:5;
+end
+% t_cos = 0:0,01:0,5;
+t_cosf = (t>=0)&(t<=0.5); t_cos = t(t_cosf);
+% t_zero = 0.5:0.01:1.5;
+t_zerof = (t>=0.5)&(t<1.5); t_zero = t(t_zerof);
+% t_noise = 1.5:0.01:3.5;
+t_noisef = (t>=1.5)&(t<3.5); t_noise = t(t_noisef);
+% t_saw = 3.5:0.01:4;
+t_sawf = (t>=3.5)&(t<4); t_saw = t(t_sawf);
+% t_const = 4:0.01:5;
+t_constf = (t>=4)&(t<5); t_const = t(t_constf);
+% Sinusoida
+A0=0; A=1.5; T=(0.5-0)/2.2915; f=1/T;  
+delay = 3;
+y_cos=A0+A*cos(2*pi*f*(t_cos-delay));
+% Nulles signals
+y_zero = 0+zeros(size(t_zero));
+%Troksna signals
+y_noise = 1.5*rand(size(t_noise))-0.75;
+%Lineari mainiga funkcija
+yA=0; yB=0.25; tA=3.5; tB=4;
+k=(yA-yB)/(tA-tB); delay=3.5;
+y_saw=k*(t_saw-delay);
+% Konstantes signals
+y_const = -1.5+zeros(size(t_const));
+%/\_/\_/\_/\_/\_/\_/\_/\_/\_/\_/\_/\_/\
+y = [y_cos,y_zero,y_noise,y_saw,y_const];
+if nargout == 0
+    plot(t,y,'LineWidth',1.5)
+    axis([0 5 -2 2])
+    xticks([0 0.5 1.5 3.5 4 5])
+    yticks([-2 -1 -0.75 0 0.25 0.75 1 2])
+    grid on 
+    y = [];
+end 
