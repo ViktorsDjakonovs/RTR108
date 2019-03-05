@@ -1,0 +1,27 @@
+%% Laboratorijas darbs #1
+%%
+% *Merijumu datu apstrade*
+%%
+% *Viktors Djakonovs*
+%%
+% *REBCO3*
+A = imread('a.png');
+B = imread('b.png');
+figure(1),image(A);
+figure(2),image(B);
+figure(2),image([500 800],[1 0],B);
+x = [564.7395 585.7778 599.0652 609.5843 618.9962 633.9445 649.4464 657.1973 667.1628 699.2739];
+y = [0.0286 0.1321 0.2802 0.4918 0.7175 0.9831 0.7269 0.4988 0.3060 0.0451];
+set(gca,'YDir','normal');
+C = polyfit(x,y,1);
+xx =  500:0.01:800;
+yy = polyval(C,xx);
+plot(x,y,'o-',xx,yy)
+xlabel('wavelength (nm)')
+ylabel('Relative Radiant Intensity')
+title('Hi.Eff.Red')
+grid
+%% Secinajumi
+% Veicot 1. Laboratorijas darbu es iemacijos pievienot fotografiju ar
+% grafikiem un nolacit datus no ta pasa grafika izmantojot [x,y]=ginput(n)
+% komandu un peli.
