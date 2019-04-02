@@ -1,0 +1,56 @@
+function y=sig(t)
+t1f = (t>=0)&(t<2); t1 = t(t1f);
+t2f = (t>=2)&(t<=4); t2 = t(t2f);
+
+y1=3/2*t1;
+y2=3+zeros(size(t2));
+y=[y1,y2];
+
+%% 6. laboratorijas darbs
+%% Videjas un efektivas vertibas noteiksana
+%% Videjas vertibas noteiksana
+t=0:0.01:4
+%% 3a formula:
+N = length(t);
+vv3a = 1/(N-1)*sum(sig(t(1:end-1)))
+vv3b = 1/(N-1)*sum(sig(t(2:end)))
+h = (t(end)-t(1))/(N-1);
+vv3c = 1/(N-1)*sum(sig(t(1:end-1)+h/2))
+vv4 = 1/(N-1)*((sig(t(1))+sig(t(end)))/2+sum(sig(t(2:end-1))))
+%% vv.noteiksana izmantojot matlaba iebuveto funkciju kas ir domata skaitliskai itrgresanai
+vvquad = 1/(t(end)-t(1))*quad(@sig,0,4)
+%% Videjas vertibas aprekinins pie dazadam precizitatem
+%%
+% 3a, 3b, 3c, 4 formulas precizitate ir uzdota ar laika soli, t. i.
+% definejot laiku t = 0:0.01:4; 0.01 ir laika solis, quad funkcijai
+% precizitate tiek uzdota ar ceturto argumentu noradot precizitati
+% quad(@sig,0,4,1e-3) 1e-3 ir precizitate tas nozime 10 pakape -3.
+%% Piemers 1
+% 3a formula ar dazadam precizitatem 
+dt = [0.1 0.01 0.001];
+for dtc=dt
+    t = 0:dtc:4;
+    N = length(t);
+    vv3a = 1/(N-1)*sum(sig(t(1:end-1)));
+    fprintf('|platums=%0.d\t|vv=%f\t|\n',dtc,vv3a);
+end
+%% quad ar dazadam precizitatem
+tol = [1e-1 1e-2 1e-3 1e-4];
+for tolc=tol
+    vvquad = 1/(t(end)-t(1))*quad(@sig,0,4,tolc);
+    fprintf('|precizitate=%0.d\t|vv=%f\t|\n',tolc,vvquad);
+end
+%% istas videjas vertibas aprekins
+% lai iegutu isti videjo vertibu noteiktais integralis (vv.formula 1.) ir
+% jaatrod ar simbolisko integresanu, musu signals no 3.lab sastaves no 5.
+% posmiem katri posmu iekopesim seit definejot attiecigu
+% t(t+sin,t_const...) ka simbolisko mainigo, integresanas robezas pec attiecoga laika robezam 
+syms t1
+y1=3/2*t1;
+int1=int(y1,t1,0,2)
+syms t2
+%y2=3+zeros(size(t2));
+y2=3;
+int2=int(y2,t2,2,4)
+vv_istaa = double(1/(4-0)*(int1+int2))
+    
