@@ -1,0 +1,9 @@
+%% Atskaite
+%
+% <<../b.png>>
+% 
+% 1. jabut simulink vid un ef aprekinam ar 3.lab.darba signalu
+
+function y = sig_kv(t)
+y = (sig(t)).^2;
+
