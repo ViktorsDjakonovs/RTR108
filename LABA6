@@ -1,0 +1,51 @@
+%% 6. laboratorijas darbs
+%% Videjas un efektivas vertibas noteiksana
+% Kosinusoida
+t_cos = 0:0,01:0.5;
+A0=0; A=1.5; T=(0.5-0)/2.2915; f=1/T;  
+delay = 3;
+y_cos=A0+A*cos(2*pi*f*(t_cos-delay));
+% Nulles signals
+t_zero = 0.5:0.01:1.5;
+y_zero = 0+zeros(size(t_zero));
+% Troksna signals
+t_noise = 1.5:0.01:3.5;
+y_noise = 1.5*rand(size(t_noise))-0.75;
+% Lineara mainiga funkcija
+t_saw = 3.5:0.01:4;
+yA=0; yB=0.25; tA=3.5; tB=4;
+k=(yA-yB)/(tA-tB); delay=3.5;
+y_saw=k*(t_saw-delay);
+% Constantes signals
+t_const = 4:0.01:5;
+y_const = -1.5+zeros(size(t_const));
+
+syms t_cos
+%t_cos = 0:0,01:0.5;
+A0=0; A=1.5; T=(0.5-0)/2.2915; f=1/T;
+y_cos=A0+A*cos(2*pi*f*(t_cos-delay));
+int_cos = int(y_cos, t_cos,0,0.5)
+syms t_zero
+%t_zero = 0.5:0.01:1.5;
+y_zero = 0+zeros(size(t_zero));
+int_zero = int(y_zero,t_zero,0.5,1.5)
+syms t_noise
+%t_noise = 1.5:0.01:3.5;
+y_noise = 0;
+int_noise = int(y_noise,t_noise,1.5,3.5)
+syms t_saw
+%t_saw = 3.5:0.01:4;
+yA=0; yB=0.25; tA=3.5; tB=4;
+k=(yA-yB)/(tA-tB); delay=3.5;
+y_saw=k*(t_saw-delay);
+int_saw = int(y_saw,t_saw,3.5,4)
+syms t_const
+y_const = -1.5+zeros(size(t_const));
+int_const = int(y_const,t_const,4,5)
+%% 
+vv_istaa = double(1/(5-0)*(int_cos+int_zero+int_noise+int_saw+int_const))
+%% 
+t = 0:0.01:5;
+N = length(t);
+lab3_kv2 = @(t) lab3(t).^2;
+vv3a = 1/(N-1)*sum(lab3_kv2(t(1:end-1)))
